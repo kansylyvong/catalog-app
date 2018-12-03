@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer,String
+from sqlalchemy import Column,Integer,String,ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -16,7 +16,7 @@ class Author(Base):
 
 class Category(Base):
     __tablename__ = 'category'
-    id = Column(Ingeger, primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(500))
 
 class Book(Base):
@@ -25,7 +25,7 @@ class Book(Base):
     title = Column(String)
     author_id = Column(Integer, ForeignKey("author.id"), nullable=False)
     description = Column(String(2500))
-    category = Column(Integer, ForiegnKey("category.id"), nullable=False)
+    category = Column(Integer, ForeignKey("category.id"), nullable=False)
     image_url = Column(String(500))
 
 engine = create_engine('sqlite:///regalTree.db')
