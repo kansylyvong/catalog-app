@@ -8,13 +8,25 @@ from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSigna
 
 Base = declarative_base()
 
+class Author(Base):
+    __tablename__ = 'author'
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(100))
+    last_name = Column(String(100))
+
+class Category(Base):
+    __tablename__ = 'category'
+    id = Column(Ingeger, primary_key=True)
+    name = Column(String(500))
+
 class Book(Base):
     __tablename__ = 'book'
     id = Column(Integer, primary_key=True)
     title = Column(String)
     author_id = Column(Integer, ForeignKey("author.id"), nullable=False)
     description = Column(String(2500))
-
+    category = Column(Integer, ForiegnKey("category.id"), nullable=False)
+    image_url = Column(String(500))
 
 engine = create_engine('sqlite:///regalTree.db')
 
