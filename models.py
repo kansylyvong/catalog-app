@@ -28,7 +28,7 @@ class Book(Base):
     category = Column(Integer, ForeignKey("category.id"), nullable=False)
     image_url = Column(String(500))
 
-engine = create_engine('sqlite:///regalTree.db')
+engine = create_engine('sqlite:///cookBook.db')
 
 
 Base.metadata.create_all(engine)
