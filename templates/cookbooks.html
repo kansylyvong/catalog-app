@@ -8,6 +8,8 @@
             <p>{{category.name}}</p>
             <p>{{author.first_name}}</p>
             <p>{{author.last_name}}</p>
+            <p><a href={{url_for('editCookBook', book_id=book.id)}}>Edit</a></p>
+            <p><a href={{url_for('deleteCookBook', book_id=book.id)}}>Delete</a></p>
         </div>
         {% endfor %}
     </body>
