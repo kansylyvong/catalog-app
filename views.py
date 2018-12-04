@@ -45,8 +45,7 @@ def addCookBook(title, authorFirstName, authorLastName, description, book_catego
 def getAllCookBooks():
     session = DBSession()
     books = session.query(Book, Author, Category).join(Author, Book.author_id == Author.id).join(Category, Category.id == Book.category).all()
-    for book, author, category in books:
-        print("{} by {} {} category {}".format(book.title, author.first_name, author.last_name, category.name))
+    return books
 
 @app.route('/addcategory/')
 def addCategory(name):
@@ -72,8 +71,6 @@ def getCategories():
     for cat in categories:
         print cat.name
 
-
-app = Flask(__name__)
 
 if __name__ == '__main__':
     app.debug = True
