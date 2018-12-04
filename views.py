@@ -17,6 +17,14 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 app = Flask(__name__)
 
+def getAuthorId(first, last):
+    pass
+
+def addCookBook(title, authorFirstName, authorLastName, description, category, image_url):
+    session = DBSession()
+    #check to see if the author exists first
+    session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).all()
+
 def addCategory(name):
     session = DBSession()
     #check if category already exists
@@ -37,9 +45,10 @@ def addCategory(name):
 def getCategories():
     session = DBSession()
     categories = session.query(Category).all()
-    print(categories)
+    for cat in categories:
+        print cat.name
 
-addCategory('Georgian')
+getCategories()
 
 app = Flask(__name__)
 
