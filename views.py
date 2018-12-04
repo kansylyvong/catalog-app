@@ -20,25 +20,33 @@ app = Flask(__name__)
 def getAuthorId(first, last):
     pass
 
-def addCookBook(title, authorFirstName, authorLastName, description, category, image_url):
+def addCookBook(title, authorFirstName, authorLastName, description, book_category, image_url):
     session = DBSession()
     author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).all()
-    category = session.query(Category).filter_by(name = category)
+    cat = session.query(Category).filter_by(name = book_category).all()
     #check to see if the author and category exists first anf if they do not add them
+    print(author)
+    print(cat)
     if author == []:
         author = Author(first_name = authorFirstName, last_name = authorLastName)
         session.add(author)
         session.commit()
-    if category == []:
-        category = Category(name = category)
-        session.add(category)
+        author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
+    if cat == []:
+        cat = Category(name = book_category)
+        session.add(cat)
         session.commit()
-    cookBook = Book(title = title, description = description, category_id = category.id, author_id = author.id, image_url = image_url)
+        cat = session.query(Category).filter_by(name = book_category)
+
+    cookBook = Book(title = title, description = description, category = cat[0].id, author_id = author[0].id, image_url = image_url)
     session.add(cookBook)
+    session.commit()
 
 def getAllCookBooks():
     session = DBSession()
-    books = session.query(Books).all()
+    books = session.query(Book).all()
+    for book in books:
+        print(book.title)
 
 def addCategory(name):
     session = DBSession()
@@ -63,7 +71,8 @@ def getCategories():
     for cat in categories:
         print cat.name
 
-addCookBook("Six Seasons", "Jeremy", "McFadden", "A really great cookbook!", "new american", "https://www.example.com")
+addCookBook('Six Seasons', 'Jeremy', 'McFadden', 'A cook book about vegtables!', 'NewAmerican', 'https://www.example.com')
+getCategories()
 
 app = Flask(__name__)
 
