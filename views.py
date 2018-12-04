@@ -21,9 +21,15 @@ def getAuthorId(first, last):
     pass
 
 @app.route('/addcookbook/', methods=['GET', 'POST'])
-def addCookBook(title, authorFirstName, authorLastName, description, book_category, image_url):
+def addCookBook():
     session = DBSession()
     if request.method == 'POST':
+        title = request.form['title']
+        authorFirstName = request.form['authorFirstName']
+        authorLastName = request.form['authorLastName']
+        description = request.form['description']
+        book_category = request.form['book_category']
+        image_url = request.form['image_url']
        try:
             author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
         except NoResultFound:
