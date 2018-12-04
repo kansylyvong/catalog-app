@@ -68,9 +68,7 @@ def addCategory(name):
 def getCategories():
     session = DBSession()
     categories = session.query(Category).all()
-    for cat in categories:
-        print cat.name
-
+    return render_template('categories.html', categories = categories)
 
 if __name__ == '__main__':
     app.debug = True
