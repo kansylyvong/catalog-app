@@ -20,6 +20,7 @@ app = Flask(__name__)
 def getAuthorId(first, last):
     pass
 
+@app.route('/addcookbook/')
 def addCookBook(title, authorFirstName, authorLastName, description, book_category, image_url):
     session = DBSession()
     try:
@@ -40,12 +41,14 @@ def addCookBook(title, authorFirstName, authorLastName, description, book_catego
     session.add(cookBook)
     session.commit()
 
+@app.route('/cookbooks/')
 def getAllCookBooks():
     session = DBSession()
     books = session.query(Book, Author, Category).join(Author, Book.author_id == Author.id).join(Category, Category.id == Book.category).all()
     for book, author, category in books:
         print("{} by {} {} category {}".format(book.title, author.first_name, author.last_name, category.name))
 
+@app.route('/addcategory/')
 def addCategory(name):
     session = DBSession()
     #check if category already exists
@@ -62,15 +65,13 @@ def addCategory(name):
         print("That category is already in the db!")
         for cat in category:
             print(cat)
-
+@app.route('/categories/')
 def getCategories():
     session = DBSession()
     categories = session.query(Category).all()
     for cat in categories:
         print cat.name
 
-addCookBook('Simple', 'Yotam', 'Ottolenghi', 'Collection of easy, flavor-forward recipes', 'Easy', 'https://www.example.com')
-getAllCookBooks()
 
 app = Flask(__name__)
 
