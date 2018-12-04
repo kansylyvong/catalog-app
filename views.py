@@ -1,7 +1,7 @@
 import time
 from functools import update_wrapper
 from flask import request, g
-from flask import Flask, jsonify 
+from flask import Flask, jsonify, render_template, redirect, url_for 
 from models import Base, Category, Author, Book 
 
 
@@ -45,7 +45,7 @@ def addCookBook(title, authorFirstName, authorLastName, description, book_catego
 def getAllCookBooks():
     session = DBSession()
     books = session.query(Book, Author, Category).join(Author, Book.author_id == Author.id).join(Category, Category.id == Book.category).all()
-    return books
+    return render_template('cookbooks.html', books = books) 
 
 @app.route('/addcategory/')
 def addCategory(name):
