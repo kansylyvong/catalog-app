@@ -2,7 +2,7 @@ import time
 from functools import update_wrapper
 from flask import request, g
 from flask import Flask, jsonify 
-from models import Base, Category 
+from models import Base, Category, Author, Book 
 
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -22,8 +22,23 @@ def getAuthorId(first, last):
 
 def addCookBook(title, authorFirstName, authorLastName, description, category, image_url):
     session = DBSession()
-    #check to see if the author exists first
-    session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).all()
+    author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).all()
+    category = session.query(Category).filter_by(name = category)
+    #check to see if the author and category exists first anf if they do not add them
+    if author == []:
+        author = Author(first_name = authorFirstName, last_name = authorLastName)
+        session.add(author)
+        session.commit()
+    if category == []:
+        category = Category(name = category)
+        session.add(category)
+        session.commit()
+    cookBook = Book(title = title, description = description, category_id = category.id, author_id = author.id, image_url = image_url)
+    session.add(cookBook)
+
+def getAllCookBooks():
+    session = DBSession()
+    books = session.query(Books).all()
 
 def addCategory(name):
     session = DBSession()
@@ -48,7 +63,7 @@ def getCategories():
     for cat in categories:
         print cat.name
 
-getCategories()
+addCookBook("Six Seasons", "Jeremy", "McFadden", "A really great cookbook!", "new american", "https://www.example.com")
 
 app = Flask(__name__)
 
