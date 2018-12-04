@@ -47,6 +47,12 @@ def getAllCookBooks():
     books = session.query(Book, Author, Category).join(Author, Book.author_id == Author.id).join(Category, Category.id == Book.category).all()
     return render_template('cookbooks.html', books = books) 
 
+@app.route('/categories/<int:cat_id>/')
+def getBooksByCat(cat_id):
+    session = DBSession()
+    books = session.query(Book, Author, Category).join(Author, Book.author_id == Author.id).join(Category, Category.id == Book.category).filter(Book.category==cat_id).all()
+    return render_template('cookbooks.html', books = books)
+
 @app.route('/addcategory/')
 def addCategory(name):
     session = DBSession()
@@ -64,6 +70,7 @@ def addCategory(name):
         print("That category is already in the db!")
         for cat in category:
             print(cat)
+
 @app.route('/categories/')
 def getCategories():
     session = DBSession()
