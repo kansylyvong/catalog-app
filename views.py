@@ -44,9 +44,9 @@ def addCookBook(title, authorFirstName, authorLastName, description, book_catego
 
 def getAllCookBooks():
     session = DBSession()
-    books = session.query(Book).all()
-    for book in books:
-        print(book.title)
+    books = session.query(Book, Author, Category).join(Author, Book.author_id == Author.id).join(Category, Category.id == Book.category).all()
+    for book, author, category in books:
+        print("{} by {} {} category {}".format(book.title, author.first_name, author.last_name, category.name))
 
 def addCategory(name):
     session = DBSession()
@@ -71,8 +71,7 @@ def getCategories():
     for cat in categories:
         print cat.name
 
-addCookBook('Six Seasons', 'Jeremy', 'McFadden', 'A cook book about vegtables!', 'NewAmerican', 'https://www.example.com')
-getCategories()
+getAllCookBooks()
 
 app = Flask(__name__)
 
