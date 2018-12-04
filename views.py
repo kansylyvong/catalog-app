@@ -22,23 +22,21 @@ def getAuthorId(first, last):
 
 def addCookBook(title, authorFirstName, authorLastName, description, book_category, image_url):
     session = DBSession()
-    author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).all()
-    cat = session.query(Category).filter_by(name = book_category).all()
-    #check to see if the author and category exists first anf if they do not add them
-    print(author)
-    print(cat)
-    if author == []:
+    try:
+        author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
+    except NoResultFound:
         author = Author(first_name = authorFirstName, last_name = authorLastName)
         session.add(author)
         session.commit()
         author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
-    if cat == []:
+    try:
+        cat = session.query(Category).filter_by(name = book_category).one()
+    except:
         cat = Category(name = book_category)
         session.add(cat)
         session.commit()
-        cat = session.query(Category).filter_by(name = book_category)
-
-    cookBook = Book(title = title, description = description, category = cat[0].id, author_id = author[0].id, image_url = image_url)
+        cat = session.query(Category).filter_by(name = book_category).one()
+    cookBook = Book(title = title, description = description, category = cat.id, author_id = author.id, image_url = image_url)
     session.add(cookBook)
     session.commit()
 
@@ -71,6 +69,7 @@ def getCategories():
     for cat in categories:
         print cat.name
 
+addCookBook('Simple', 'Yotam', 'Ottolenghi', 'Collection of easy, flavor-forward recipes', 'Easy', 'https://www.example.com')
 getAllCookBooks()
 
 app = Flask(__name__)
