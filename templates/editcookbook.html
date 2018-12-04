@@ -1,7 +1,7 @@
 <html>
     <body>
         <form method="POST" enctype="multipart/form-data" 
-                            action="{{url_for('addCookBook')}}">
+                            action="{{url_for('editCookBook', book_id=book.id)}}">
             <input name="title" type="text" placeholder="{{book.title}}">
             <input name="authorFirstName" type="text" placeholder="{{author.first_name}}">
             <input name="authorLastName" type="text" placeholder="{{author.last_name}}">
