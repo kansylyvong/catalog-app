@@ -1,5 +1,6 @@
 <html>
     <body>
+        <div><a href={{url_for('addCategory')}}>Add another category</a></div>
         {% for cat in categories %}
         <div><a href={{url_for('getBooksByCat', cat_id = cat.id)}}>{{cat.name}}</a></div>
         {% endfor %}
