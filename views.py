@@ -41,6 +41,17 @@ def addCookBook(title, authorFirstName, authorLastName, description, book_catego
     session.add(cookBook)
     session.commit()
 
+@app.route('/deletebook/<int:book_id>/')
+def deleteBook(book_id):
+    session = DBSession()
+    bookToDelete = session.query(Book).filter_by(id = book_id).one()
+    if request.method == 'POST':
+        session.delete(bookToDelete)
+        session.commit()
+        return redirect(url_for('getBooksByCat', cat_id = bookToDelete.id))
+    else:
+        return render_template('deletebook.html', book = bookToDelete)
+
 @app.route('/cookbooks/')
 def getAllCookBooks():
     session = DBSession()
