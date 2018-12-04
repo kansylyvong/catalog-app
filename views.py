@@ -20,37 +20,44 @@ app = Flask(__name__)
 def getAuthorId(first, last):
     pass
 
-@app.route('/addcookbook/')
+@app.route('/addcookbook/', methods=['GET', 'POST'])
 def addCookBook(title, authorFirstName, authorLastName, description, book_category, image_url):
     session = DBSession()
-    try:
-        author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
-    except NoResultFound:
-        author = Author(first_name = authorFirstName, last_name = authorLastName)
-        session.add(author)
+    if request.method == 'POST':
+       try:
+            author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
+        except NoResultFound:
+            author = Author(first_name = authorFirstName, last_name = authorLastName)
+            session.add(author)
+            session.commit()
+            author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
+        try:
+            cat = session.query(Category).filter_by(name = book_category).one()
+        except:
+            cat = Category(name = book_category)
+            session.add(cat)
+            session.commit()
+            cat = session.query(Category).filter_by(name = book_category).one()
+        cookBook = Book(title = title, description = description, category = cat.id, author_id = author.id, image_url = image_url)
+        session.add(cookBook)
         session.commit()
-        author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
-    try:
-        cat = session.query(Category).filter_by(name = book_category).one()
-    except:
-        cat = Category(name = book_category)
-        session.add(cat)
-        session.commit()
-        cat = session.query(Category).filter_by(name = book_category).one()
-    cookBook = Book(title = title, description = description, category = cat.id, author_id = author.id, image_url = image_url)
-    session.add(cookBook)
-    session.commit()
-
-@app.route('/deletebook/<int:book_id>/')
-def deleteBook(book_id):
+        return redirect(url_for('getBooksByCat', cat_id = cookBook.category))
+    else:
+        return render_template('addcookbook.html')
+@app.route('/deletebook/<int:book_id>/', methods=['GET', 'POST'])
+def deleteCookBook(book_id):
     session = DBSession()
     bookToDelete = session.query(Book).filter_by(id = book_id).one()
     if request.method == 'POST':
         session.delete(bookToDelete)
         session.commit()
-        return redirect(url_for('getBooksByCat', cat_id = bookToDelete.id))
+        return redirect(url_for('getBooksByCat', cat_id = bookToDelete.category))
     else:
         return render_template('deletebook.html', book = bookToDelete)
+
+@app.route('/cookbook/edit/<int:book_id>/', methods=['GET', 'POST'])
+def editCookBook(book_id):
+    pass
 
 @app.route('/cookbooks/')
 def getAllCookBooks():
