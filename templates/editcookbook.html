@@ -1,11 +1,28 @@
 {% include "header.html" %}
         <form method="POST" enctype="multipart/form-data" 
                             action="{{url_for('editCookBook', book_id=book.id)}}">
-            <input name="title" type="text" placeholder="{{book.title}}">
-            <input name="authorFirstName" type="text" placeholder="{{author.first_name}}">
-            <input name="authorLastName" type="text" placeholder="{{author.last_name}}">
-            <input name="book_category" type="text" placeholder="{{category.name}}">
-            <input name="image_url" type="text" placeholder="{{book.image_url}}">
-            <textarea name="description">{{book.description}}</textarea>
-            <input type="Submit" value="Update">
+            <div class="form-group"
+                <label for="cookBookTitle">Title</label>
+                <input id="cookBookTitle" name="title" type="text" placeholder="{{book.title}}">
+            </div>
+            <div class="form-group">    
+                <label for="bookAuthorFirstName">Author First Name</label>
+                <input id="bookAuthorFirstName" name="authorFirstName" type="text" placeholder="{{author.first_name}}">
+                <label for="bookAuthorLastName">Author Last Name</label>
+                <input id="bookAuthorLastName" name="authorLastName" type="text" placeholder="{{author.last_name}}">
+            </div>
+            <div class="form-group">
+                <label for="bookCategory">Category</label>
+                <input id="bookCategory" name="book_category" type="text" placeholder="{{category.name}}">
+            </div>
+            <div class="form-group">
+                <label for="imageUrl">Image URL</label>
+                <input id="imageUrl" name="image_url" type="text" placeholder="{{book.image_url}}">
+            </div>
+            <div class="form-group"
+                <label for="bookDescription">Book Description</label>
+                <textarea id="" name="description">{{book.description}}</textarea>
+            </div>
+            <button type="Submit" class="btn btn-primary">Update</button>
+        </form>
 {% include "footer.html" %}
