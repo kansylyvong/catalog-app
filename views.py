@@ -7,7 +7,9 @@ from models import Base, Category, Author, Book
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine 
+from sqlalchemy.orm.exc import  NoResultFound 
+from sqlalchemy.exc import DBAPIError, SQLAlchemyError
 
 import json
 
@@ -32,14 +34,14 @@ def addCookBook():
         image_url = request.form['image_url']
         try:
             author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
-        except NoResultFound:
+        except (SQLAlchemyError, DBAPIError) as e:
             author = Author(first_name = authorFirstName, last_name = authorLastName)
             session.add(author)
             session.commit()
             author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
         try:
             cat = session.query(Category).filter_by(name = book_category).one()
-        except:
+        except (SQLAlchemyError, DBAPIError) as e:
             cat = Category(name = book_category)
             session.add(cat)
             session.commit()
@@ -50,6 +52,7 @@ def addCookBook():
         return redirect(url_for('getBooksByCat', cat_id = cookBook.category))
     else:
         return render_template('addcookbook.html')
+
 @app.route('/deletebook/<int:book_id>/', methods=['GET', 'POST'])
 def deleteCookBook(book_id):
     session = DBSession()
@@ -128,6 +131,7 @@ def addCategory(name):
         for cat in category:
             print(cat)
 
+@app.route('/')
 @app.route('/categories/')
 def getCategories():
     session = DBSession()
