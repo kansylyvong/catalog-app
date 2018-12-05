@@ -1,12 +1,5 @@
-<html>
     {% include "header.html" %}
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="nav-link" href="#">Home</a>
-        </nav>
         {% for cat in categories %}
         <div><a href={{url_for('getBooksByCat', cat_id = cat.id)}}>{{cat.name}}</a></div>
         {% endfor %}
         {% include "footer.html" %}
-    </body>
-</html>
