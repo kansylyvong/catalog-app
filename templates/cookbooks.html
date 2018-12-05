@@ -1,13 +1,15 @@
     {% include "header.html" %}
         {% for book, author, category in books %}
-        <div>
-            <p><strong> {{book.title}} </strong></p>
-            <p>{{book.description}}</p>
-            <p>{{category.name}}</p>
-            <p>{{author.first_name}}</p>
-            <p>{{author.last_name}}</p>
-            <p><a href={{url_for('editCookBook', book_id=book.id)}}>Edit</a></p>
-            <p><a href={{url_for('deleteCookBook', book_id=book.id)}}>Delete</a></p>
+        <div class="card" style="width: 18rem; height: 18rem">
+            <img class="card-img-top" src="" alt="Card iamge cap">
+            <div class="card-body">
+                <h5 class="card-title"> {{book.title}} </h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{author.first_name}} {{author.last_name}}</h6>
+                <p class="card-text"> {{book.description}} </p>
+                <a class="card-link" href={{url_for('editCookBook', book_id=book.id)}}>Edit</a>
+                <a class="card-link" href={{url_for('deleteCookBook', book_id=book.id)}}>Delete</a>
+            </div>
         </div>
+
         {% endfor %}
         {% include "footer.html" %}
