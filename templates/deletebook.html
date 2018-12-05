@@ -1,9 +1,7 @@
-<html>
-    <body>
+{% include "header.html" %}
         <h1>Are you sure you want to delete {{book.title}}</h1>
         <form action="{{ url_for('deleteCookBook', book_id=book.id)}}" method = 'post'>
           <input type='submit', value = 'Delete'>
         </form>
         <a href = "{{ url_for('getBooksByCat', cat_id = book.category)}}"> Cancel </a>
-    </body>
-</html>
+{% include "footer.html" %}

@@ -1,5 +1,4 @@
-<html>
-    <body>
+{% include "header.html" %}
         <form method="POST" enctype="multipart/form-data" 
                             action="{{url_for('editCookBook', book_id=book.id)}}">
             <input name="title" type="text" placeholder="{{book.title}}">
@@ -9,5 +8,4 @@
             <input name="image_url" type="text" placeholder="{{book.image_url}}">
             <textarea name="description">{{book.description}}</textarea>
             <input type="Submit" value="Update">
-    </body>
-</html>
+{% include "footer.html" %}
