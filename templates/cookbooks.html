@@ -1,6 +1,7 @@
     {% include "header.html" %}
+    <div class="card-group">
         {% for book, author, category in books %}
-        <div class="card" style="width: 18rem; height: 18rem">
+        <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="" alt="Card iamge cap">
             <div class="card-body">
                 <h5 class="card-title"> {{book.title}} </h5>
@@ -10,6 +11,6 @@
                 <a class="card-link" href={{url_for('deleteCookBook', book_id=book.id)}}>Delete</a>
             </div>
         </div>
-
         {% endfor %}
+    </div>
         {% include "footer.html" %}
