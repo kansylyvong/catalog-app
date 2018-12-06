@@ -70,6 +70,7 @@ def editCookBook(book_id):
     bookToEdit = session.query(Book).filter_by(id = book_id).one()
     authorToEdit = session.query(Author).filter_by(id = bookToEdit.author_id).one()
     categoryToEdit = session.query(Category).filter_by(id = bookToEdit.category).one()
+    categories = session.query(Category).all()
     print(authorToEdit.first_name)
     print(categoryToEdit.name)
     if request.method == 'POST':
@@ -99,7 +100,7 @@ def editCookBook(book_id):
         session.commit()
         return redirect(url_for('getBooksByCat', cat_id = bookToEdit.category))
     else:
-        return render_template('editcookbook.html', book = bookToEdit, author = authorToEdit, category = categoryToEdit)
+        return render_template('editcookbook.html', book = bookToEdit, author = authorToEdit, category = categoryToEdit, categories = categories)
 
 @app.route('/cookbooks/')
 def getAllCookBooks():

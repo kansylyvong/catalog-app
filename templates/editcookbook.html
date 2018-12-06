@@ -15,7 +15,7 @@
                 <label for="bookCategory">Category</label>
                 <select class="form-control" id="bookCategory" name="book_category" type="text" placeholder="{{category.name}}">
                     {% for cat in category %}
-                    <option>{% cat.name %}</option>
+                    <option>{{ cat.name }}</option>
                     {% endfor %}
                 </select>    
             </div>
