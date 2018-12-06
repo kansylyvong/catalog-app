@@ -1,13 +1,28 @@
-<html>
-    <body>
+{% include "header.html" %}
         <form method="POST" enctype="multipart/form-data" 
                             action="{{url_for('addCookBook')}}">
-            <input name="title" type="text" placeholder="book title">
-            <input name="authorFirstName" type="text" placeholder="Author First Name">
-            <input name="authorLastName" type="text" placeholder="Author Last Name">
-            <input name="book_category" type="text" placeholder="Category">
-            <input name="image_url" type="text" placeholder="image url">
-            <textarea name="description"></textarea>
-            <input type="Submit" value="Create">
-    </body>
-</html>
+            <div class="form-group"
+                <label for="cookBookTitle">Title</label>
+                <input class="form-control" id="cookBookTitle" name="title" type="text" placeholder="">
+            </div>
+            <div class="form-group">    
+                <label for="bookAuthorFirstName">Author First Name</label>
+                <input class="form-control" id="bookAuthorFirstName" name="authorFirstName" type="text" placeholder="">
+                <label for="bookAuthorLastName">Author Last Name</label>
+                <input class="form-control" id="bookAuthorLastName" name="authorLastName" type="text" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="bookCategory">Category</label>
+                <input classs="form-control" id="bookCategory" name="book_category" type="text" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="imageUrl">Image URL</label>
+                <input class="form-control"id="imageUrl" name="image_url" type="text" placeholder="">
+            </div>
+            <div class="form-group"
+                <label for="bookDescription">Book Description</label>
+                <textarea class="form-control" id="bookDescription" name="description"></textarea>
+            </div>
+            <button type="Submit" class="btn btn-primary">Create/button>
+        </form>
+{% include "footer.html" %}
