@@ -68,14 +68,10 @@ def deleteCookBook(book_id):
 def editCookBook(book_id):
     session = DBSession()
     bookToEdit = session.query(Book).filter_by(id = book_id).one()
-    authorToEdit = session.query(Author).filter_by(id = bookToEdit.author_id).one()
-    categoryToEdit = session.query(Category).filter_by(id = bookToEdit.category).one()
+    bookToEditAuthor = session.query(Author).filter_by(id = bookToEdit.author_id).first()
     categories = session.query(Category).all()
-    print(authorToEdit.first_name)
-    print(categoryToEdit.name)
+    categoryToEdit = session.query(Category).filter_by(id = bookToEdit.category).first()
     if request.method == 'POST':
-        # it is possible that author or category or both were updated. In that case we would need to insert
-        # new author or category and update book record
         title = request.form['title']
         authorFirstName = request.form['authorFirstName']
         authorLastName = request.form['authorLastName']
@@ -85,22 +81,18 @@ def editCookBook(book_id):
         bookToEdit.title = title
         bookToEdit.description = description
         bookToEdit.image_url = image_url
-        if categoryToEdit.name !=  book_category:
-            cat = Category(name = book_category)
-            session.add(cat)
-            session.commit()
-            cat = session.query(Category).filter_by(name = cat).one()
-            bookToEdit.category = cat.id
-        if authorToEdit.first_name != authorFirstName or authorToEdit.last_name != authorLastName:
-            author = Author(first_name  = authorFirstName, last_name = authorLastName)
+        bookToEdit.category = book_category
+        if bookToEditAuthor.first_name != authorFirstName or bookToEditAuthor.last_name != authorLastName:
+            author = Author(first_name = authorFirstName, last_name = authorLastName)
             session.add(author)
-            author = session.query(Author).filter_by(first_name = author.first_name, last_name = author.last_name)
-            bookToEdit.author_id = author.id
+            session.commit()
+            auth = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName)
+            bookToEdit.author_id = auth.id
         session.add(bookToEdit)
         session.commit()
         return redirect(url_for('getBooksByCat', cat_id = bookToEdit.category))
     else:
-        return render_template('editcookbook.html', book = bookToEdit, author = authorToEdit, category = categoryToEdit, categories = categories)
+        return render_template('editcookbook.html', book = bookToEdit, author = bookToEditAuthor, category = categoryToEdit, categories = categories)
 
 @app.route('/cookbooks/')
 def getAllCookBooks():
