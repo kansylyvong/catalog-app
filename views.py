@@ -4,10 +4,11 @@ from flask import request, g
 from flask import session as login_session
 import random
 import string
-from flask import Flask, jsonify, render_template, redirect, url_for, make_response
+from flask import Flask, jsonify, render_template, redirect, url_for, make_response, flash
 from models import Base, Category, Author, Book, User
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
+import httplib2
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
@@ -88,8 +89,8 @@ def fbconnect():
 @app.route('/addcookbook/', methods=['GET', 'POST'])
 def addCookBook():
     session = DBSession()
-#    if 'username' not in login_session:
-#        return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         title = request.form['title']
         authorFirstName = request.form['authorFirstName']
@@ -202,6 +203,7 @@ def getCategories():
     return render_template('categories.html', categories = categories)
 
 def createUser(login_session):
+    session = DBSession()
     newUser = User(name = login_session['username'], email = login_session['email'], picture = login_session['picture'])
     session.add(newUser)
     session.commit()
@@ -212,7 +214,7 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id = user_id).one()
     return user
 
-def getUserID(email):
+def getUserId(email):
     try:
         user = session.query(User).filter_by(email = email).one()
         return user.id
@@ -220,5 +222,6 @@ def getUserID(email):
         return None
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host = '0.0.0.0', port = 8234)
