@@ -26,6 +26,13 @@ app = Flask(__name__)
 def getAuthorId(first, last):
     pass
 
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                for c in xrange(32))
+    login_session['state'] = state
+    return render_template('login.html', STATE=state)
+
 @app.route('/addcookbook/', methods=['GET', 'POST'])
 def addCookBook():
     session = DBSession()
