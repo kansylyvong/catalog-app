@@ -8,6 +8,13 @@ from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer, BadSigna
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    picture = Column(String(250))
+    
 class Author(Base):
     __tablename__ = 'author'
     id = Column(Integer, primary_key=True)
@@ -27,6 +34,7 @@ class Book(Base):
     description = Column(String(2500))
     category = Column(Integer, ForeignKey("category.id"), nullable=False)
     image_url = Column(String(500))
+    user = relationship(User)
 
 engine = create_engine('sqlite:///cookBook.db')
 

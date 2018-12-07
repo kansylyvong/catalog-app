@@ -1,8 +1,8 @@
     {% include "header.html" %}
     <div class="card-columns">
         {% for book, author, category in books %}
-        <div class="card">
-            <img class="card-img-top" src="" alt="Card iamge cap">
+        <div class="card" style="">
+            <img class="card-img-top" src=".../100px600/" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title"> {{book.title}} </h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{author.first_name}} {{author.last_name}}</h6>
