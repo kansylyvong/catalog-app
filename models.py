@@ -34,7 +34,7 @@ class Book(Base):
     description = Column(String(2500))
     category = Column(Integer, ForeignKey("category.id"), nullable=False)
     image_url = Column(String(500))
-    user = relationship(User)
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
 engine = create_engine('sqlite:///cookBook.db')
 

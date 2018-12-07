@@ -25,8 +25,8 @@ def getAuthorId(first, last):
 @app.route('/addcookbook/', methods=['GET', 'POST'])
 def addCookBook():
     session = DBSession()
-    if 'username' not in login_session:
-        return redirect('/login')
+#    if 'username' not in login_session:
+#        return redirect('/login')
     if request.method == 'POST':
         title = request.form['title']
         authorFirstName = request.form['authorFirstName']
@@ -59,8 +59,8 @@ def addCookBook():
 @app.route('/deletebook/<int:book_id>/', methods=['GET', 'POST'])
 def deleteCookBook(book_id):
     session = DBSession()
-    if 'username' not in login_session:
-        return redirect('/login')
+#    if 'username' not in login_session:
+#        return redirect('/login')
     bookToDelete = session.query(Book).filter_by(id = book_id).one()
     if request.method == 'POST':
         session.delete(bookToDelete)
@@ -72,8 +72,8 @@ def deleteCookBook(book_id):
 @app.route('/cookbook/edit/<int:book_id>/', methods=['GET', 'POST'])
 def editCookBook(book_id):
     session = DBSession()
-    if 'username' not in login_session:
-        return redirect('/login')
+#    if 'username' not in login_session:
+#        return redirect('/login')
     bookToEdit = session.query(Book).filter_by(id = book_id).one()
     bookToEditAuthor = session.query(Author).filter_by(id = bookToEdit.author_id).first()
     categories = session.query(Category).all()
