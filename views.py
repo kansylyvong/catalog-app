@@ -2,7 +2,7 @@ import time
 from functools import update_wrapper
 from flask import request, g
 from flask import Flask, jsonify, render_template, redirect, url_for 
-from models import Base, Category, Author, Book 
+from models import Base, Category, Author, Book, User
 
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -130,6 +130,13 @@ def getCategories():
     session = DBSession()
     categories = session.query(Category).all()
     return render_template('categories.html', categories = categories)
+
+def createUser(login_session):
+    newUser = User(name = login_session['username'], email = login_session['email'], picture = login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email = login_session['email']).one()
+    return user.id
 
 if __name__ == '__main__':
     app.debug = True
