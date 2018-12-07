@@ -1,9 +1,13 @@
 import time
 from functools import update_wrapper
 from flask import request, g
-from flask import Flask, jsonify, render_template, redirect, url_for 
+from flask import session as login_session
+import random
+import string
+from flask import Flask, jsonify, render_template, redirect, url_for, make_response
 from models import Base, Category, Author, Book, User
-
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.client import FlowExchangeError
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
