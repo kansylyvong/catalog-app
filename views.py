@@ -142,6 +142,13 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id = user_id).one()
     return user
 
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email = email).one()
+        return user.id
+    except:
+        return None
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host = '0.0.0.0', port = 8234)
