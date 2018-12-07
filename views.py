@@ -25,6 +25,8 @@ def getAuthorId(first, last):
 @app.route('/addcookbook/', methods=['GET', 'POST'])
 def addCookBook():
     session = DBSession()
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         title = request.form['title']
         authorFirstName = request.form['authorFirstName']
@@ -32,6 +34,7 @@ def addCookBook():
         description = request.form['description']
         book_category = request.form['book_category']
         image_url = request.form['image_url']
+        user_id = login_session['user_id']
         try:
             author = session.query(Author).filter_by(first_name = authorFirstName, last_name = authorLastName).one()
         except (SQLAlchemyError, DBAPIError) as e:
@@ -46,7 +49,7 @@ def addCookBook():
             session.add(cat)
             session.commit()
             cat = session.query(Category).filter_by(name = book_category).one()
-        cookBook = Book(title = title, description = description, category = cat.id, author_id = author.id, image_url = image_url)
+        cookBook = Book(title = title, description = description, category = cat.id, author_id = author.id, image_url = image_url, user_id=user_id)
         session.add(cookBook)
         session.commit()
         return redirect(url_for('getBooksByCat', cat_id = cookBook.category))
@@ -56,6 +59,8 @@ def addCookBook():
 @app.route('/deletebook/<int:book_id>/', methods=['GET', 'POST'])
 def deleteCookBook(book_id):
     session = DBSession()
+    if 'username' not in login_session:
+        return redirect('/login')
     bookToDelete = session.query(Book).filter_by(id = book_id).one()
     if request.method == 'POST':
         session.delete(bookToDelete)
@@ -67,6 +72,8 @@ def deleteCookBook(book_id):
 @app.route('/cookbook/edit/<int:book_id>/', methods=['GET', 'POST'])
 def editCookBook(book_id):
     session = DBSession()
+    if 'username' not in login_session:
+        return redirect('/login')
     bookToEdit = session.query(Book).filter_by(id = book_id).one()
     bookToEditAuthor = session.query(Author).filter_by(id = bookToEdit.author_id).first()
     categories = session.query(Category).all()
