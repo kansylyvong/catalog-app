@@ -42,7 +42,7 @@ class Category(Base):
     @property
     def serialize(self):
         return {
-            'name': return self.name
+            'name': self.name
         }
 
 class Book(Base):
