@@ -37,7 +37,7 @@ def showLogin():
 @app.route('/getcoobook/<int:id>/json')
 def getCookBook(id):
     session = DBSession()
-    book = session.query(Book).filter_by(id = id)
+    book = session.query(Book).filter_by(id = id).first()
     return jsonify(Book=book.serialize)
 
 @app.route('/fbconnect', methods=['POST'])
