@@ -71,7 +71,8 @@ def fbconnect():
     login_session['picture'] = data["data"]["url"]
 
     user_id = getUserId(login_session['email'])
-    if not user_id:
+    print(user_id)
+    if user_id is None:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
@@ -215,6 +216,7 @@ def getUserInfo(user_id):
     return user
 
 def getUserId(email):
+    session = DBSession()
     try:
         user = session.query(User).filter_by(email = email).one()
         return user.id
