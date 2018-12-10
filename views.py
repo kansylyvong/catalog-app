@@ -34,6 +34,12 @@ def showLogin():
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
+@app.route('/getcoobook/<int: id>/json')
+def getCookBook(id):
+    session = DBSession()
+    book = session.query(Book).filter_by(id = id)
+    return jsonify(Book=book.serialize)
+
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     if request.args.get('state') != login_session['state']:
