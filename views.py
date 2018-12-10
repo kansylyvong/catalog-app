@@ -34,7 +34,7 @@ def showLogin():
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
-@app.route('/getcoobook/<int: id>/json')
+@app.route('/getcoobook/<int:id>/json')
 def getCookBook(id):
     session = DBSession()
     book = session.query(Book).filter_by(id = id)
