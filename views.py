@@ -99,6 +99,7 @@ def fbdisconnect():
     url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
+    del login_session['username']
     return "you have been logged out"
 
 @app.route('/addcookbook/', methods=['GET', 'POST'])
