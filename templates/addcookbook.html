@@ -15,7 +15,7 @@
                 <label for="bookCategory">Category</label>
                 <select class="form-control" id="bookCategory" name="book_category" type="text">
                     {% for cat in categories %}
-                    <option value="{{cat.id}}">{{cat.name}}</option>
+                    <option value="{{cat.name}}">{{cat.name}}</option>
                     {% endfor %}
                 </select>
             </div>
