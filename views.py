@@ -134,7 +134,8 @@ def addCookBook():
         session.commit()
         return redirect(url_for('getBooksByCat', cat_id = cookBook.category))
     else:
-        return render_template('addcookbook.html')
+        cats = session.query(Category).all()
+        return render_template('addcookbook.html', categories = cats)
 
 @app.route('/deletebook/<int:book_id>/', methods=['GET', 'POST'])
 def deleteCookBook(book_id):
